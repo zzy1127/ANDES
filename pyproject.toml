@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "andes"
+version = "0.1.0"
+description = "ANDES: Agent-Native Data Evolving Synthesis — an API-only SFT data synthesis pipeline."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "The ANDES Authors" },
+]
+keywords = [
+    "llm",
+    "sft",
+    "data-synthesis",
+    "agent",
+    "post-training",
+    "fine-tuning",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "pandas>=1.5",
+    "requests>=2.28",
+    "tqdm>=4.65",
+]
+
+[project.optional-dependencies]
+hf = ["datasets>=2.14"]
+ms = ["modelscope>=1.9"]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.4",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/andes"
+Repository = "https://github.com/your-org/andes"
+Issues = "https://github.com/your-org/andes/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["andes*"]
+exclude = ["examples*", "tests*"]

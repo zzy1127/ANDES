@@ -1,0 +1,6 @@
+# Runtime dependencies for ANDES.
+# The canonical source of truth is `pyproject.toml`; this file is a
+# convenience for users who prefer `pip install -r requirements.txt`.
+pandas>=1.5
+requests>=2.28
+tqdm>=4.65

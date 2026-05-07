@@ -1,0 +1,8 @@
+{
+  "api_url": "https://api.openai.com/v1/chat/completions",
+  "model_name": "gpt-4o",
+  "task_description": "Synthesize instruction-response pairs that train a model to perform faithful tool calling. Each task should provide a user request, one or more available function specifications, and any context needed to decide the correct action. The response should be a single, schema-conformant tool call (or an explicit no-call decision when no available tool fits the request).",
+  "num_samples": 300,
+  "format_requirement": "tool_call",
+  "max_workers": 8
+}
