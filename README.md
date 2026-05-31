@@ -1,6 +1,10 @@
 <div align="center">
 
-<h1><img src="assets/andes_icon.png" alt="ANDES icon" width="44" height="44"> ANDES: Agent Native Data Evolving Synthesis Tool for Autonomous Instruction Alignment</h1>
+<h1>
+  <img src="assets/andes_icon.png" alt="ANDES icon" width="46" height="46">
+  ANDES: Agent Native Data Evolving Synthesis<br>
+  Tool for Autonomous Instruction Alignment
+</h1>
 
 <p>
   <b>Zhengyang Zhao</b><sup>*1</sup>,
@@ -41,37 +45,33 @@
 
 </div>
 
-## <img src="assets/icons/news.svg" alt="News" width="28"> News
+## 🗞️ News
 
 | Date | Update |
 | --- | --- |
 | 2026.05.31 | The ANDES preprint and initial open-source repository are released. |
 | Coming soon | Core-code documentation, supported model recipes, and citation metadata will be updated. |
 
-## <img src="assets/icons/highlights.svg" alt="Highlights" width="28"> Highlights
+## ✨ Highlights
 
 <table>
   <tr>
     <td width="50%" valign="top">
-      <img src="assets/icons/agent_skill.svg" alt="Agent skill icon" width="58" align="left">
-      <b>Agent-native synthesis skill</b><br>
+      <b>🧠 Agent-native synthesis skill</b><br>
       Exposes data synthesis as a simple tool-calling interface, so trainer agents can request targeted data without hand-building web-search or static offline pipelines.
     </td>
     <td width="50%" valign="top">
-      <img src="assets/icons/world_tree.svg" alt="World Tree icon" width="58" align="left">
-      <b>Self-evolving World Tree routing</b><br>
+      <b>🌳 Self-evolving World Tree routing</b><br>
       Routes Topic -> Theme -> Scenario samples toward target-aligned regions while expanding saturated subtrees to preserve scenario diversity.
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <img src="assets/icons/synthesis_refine.svg" alt="Synthesis and refine icon" width="58" align="left">
-      <b>Two-stage generation and refinement</b><br>
+      <b>🛠️ Two-stage generation and refinement</b><br>
       Generates QA data, critiques and filters responses, rewrites retained samples, and summarizes logical-diversity risks for the agent.
     </td>
     <td width="50%" valign="top">
-      <img src="assets/icons/feedback_report.svg" alt="Feedback report icon" width="58" align="left">
-      <b>Report-driven closed-loop feedback</b><br>
+      <b>🔁 Report-driven closed-loop feedback</b><br>
       Returns refined data plus a diagnostic report that drives the next synthesis request, active filtering, and sample-budget adjustment.
     </td>
   </tr>
@@ -92,7 +92,7 @@
   </tr>
 </table>
 
-## <img src="assets/icons/overview.svg" alt="Overview" width="28"> Overview
+## 🧭 Overview
 
 <div align="center">
   <img src="assets/andes_overview.png" alt="ANDES framework overview" width="100%">
@@ -109,7 +109,7 @@ ANDES is organized around four stages:
 | **3. Two-stage data synthesis** | The generator creates task-aligned or general QA data; the refiner critiques, filters, rewrites, and audits logical diversity. |
 | **4. Outputs and feedback** | ANDES returns refined SFT data and a report that helps the trainer agent filter data and configure the next call. |
 
-## <img src="assets/icons/core_codes.svg" alt="Core codes" width="28"> Core Codes and Supported Models
+## 🧩 Core Codes and Supported Models
 
 The current implementation focuses on API-based SFT data synthesis for agentic post-training.
 
@@ -124,7 +124,7 @@ The current implementation focuses on API-based SFT data synthesis for agentic p
 
 **Supported models:** Coming soon. The public package is model-agnostic at the data-synthesis layer and uses an OpenAI-compatible API backend for routing, generation, refinement, evolution, and diversity summarization.
 
-## <img src="assets/icons/preparation.svg" alt="Preparation" width="28"> Preparation
+## 🛠️ Preparation
 
 ```bash
 git clone https://github.com/zzy1127/ANDES.git
@@ -143,7 +143,7 @@ Configure the API key in your shell rather than in a JSON file:
 export OPENAI_API_KEY=your_api_key
 ```
 
-## <img src="assets/icons/quick_start.svg" alt="Quick start" width="28"> Quick Start
+## 🚀 Quick Start
 
 Edit [`examples/config.example.json`](examples/config.example.json) or create a compatible JSON config:
 
@@ -179,7 +179,7 @@ Artifacts are written to `andes/pipelines/cache/`.
 | `code` | Fusion-track answers must be wrapped in a Markdown code block. |
 | `tool_call` | Fusion-track answers must be wrapped as JSON tool calls. |
 
-## <img src="assets/icons/results.svg" alt="Results" width="28"> Results
+## 📊 Results
 
 <div align="center">
   <img src="assets/posttrainbench_results.png" alt="PostTrainBench results" width="98%">
@@ -209,15 +209,15 @@ Beyond the final score, the paper shows that ANDES improves autonomous post-trai
 
 In the extended multi-target synthesis setting, ANDES uses 10k synthesized samples for Qwen3-8B and reaches **58.9%** overall across AIME24, Gaokao, MBPP, MMLU, and CEVAL, outperforming the 10k and 1M static-data baselines reported in the paper.
 
-## <img src="assets/icons/citation.svg" alt="Citation" width="28"> Citation
+## 📚 Citation
 
 Coming soon. Citation metadata will be added after the public paper record is finalized.
 
-## <img src="assets/icons/acknowledgment.svg" alt="Acknowledgment" width="28"> Acknowledgment
+## 🙏 Acknowledgment
 
 We build the codebase on the DataFlow framework and evaluate the autonomous post-training setting with PostTrainBench. We thank the open-source post-training, data-synthesis, and agent-tooling communities for the foundations that made this work possible.
 
-## <img src="assets/icons/contact.svg" alt="Contact" width="28"> Contact
+## 📮 Contact
 
 For questions about the paper or code, please contact:
 
