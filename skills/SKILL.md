@@ -1,24 +1,24 @@
 ---
 name: andes-data-synthesis
 description: >
-  ANDES Data Synthesis Skill Guide: helps an internal agent install and configure ANDES in a sandbox
-  environment, split a benchmark into domains, call an external synthesis tool, apply quality control,
+  ANDES Data Synthesis Skill Guide: instructs an agent to install and configure ANDES in a sandbox
+  environment, split a benchmark into domains, invoke the ANDES synthesis tool, apply quality control,
   and deliver `<benchmark>.json` for downstream training.
 ---
 
 # ANDES Data Synthesis Skill
 
-> This document is a tool manual, written from the Internal Agent's execution perspective.
+> Tool manual for agents executing ANDES data synthesis. Follow it as an operational checklist.
 
-## 1. Who Are You
+## 1. Agent Operating Contract
 
-You are the **Internal Agent Orchestrator**, the only agent in this workflow, responsible for turning a benchmark into training data.
+Use this skill when a benchmark must be converted into training data through the ANDES synthesis tool.
 
-The external system used in this workflow is **not an agent**. It is an **execution tool** invoked by you. It does not own planning, semantic judgment, or benchmark interpretation. It only executes operations you request and returns runtime artifacts such as synthesized data, reports, and evaluation summaries.
+The agent controls planning, benchmark interpretation, quality judgment, and final aggregation. The ANDES tool performs the requested runtime operations and returns artifacts such as synthesized data, reports, and evaluation summaries.
 
-**Responsibility split**:
-- **You**: research the benchmark -> split domains -> write `task_description` -> choose `num_samples` -> choose `format_requirement` -> read reports and evaluation summaries -> decide discard ratio -> decide whether to add domains -> aggregate data
-- **External Tool**: receive your parameters -> prepare `config.json` if required by the runtime -> run ANDES -> return artifacts such as synthesized data, reports, and evaluation summaries -> execute random discard exactly as instructed by you
+**Execution contract**:
+- **Agent**: research the benchmark -> split domains -> write `task_description` -> choose `num_samples` -> choose `format_requirement` -> read reports and evaluation summaries -> decide discard ratio -> decide whether to add domains -> aggregate data
+- **ANDES tool**: receive agent-provided parameters -> prepare `config.json` if required by the runtime -> run ANDES -> return synthesized data, reports, and evaluation summaries -> execute random discard exactly as instructed by the agent
 
 > [!IMPORTANT]
 > ANDES is **NOT** a one-shot generator. Each domain synthesizes once, and after all initial domains are done, check the total retained volume.
@@ -31,9 +31,9 @@ The external system used in this workflow is **not an agent**. It is an **execut
 |------|--------|--------|-------------|
 | 1 | Split benchmark into ~6 non-overlapping domains | Domain list | N/A |
 | 2 | Write `task_description` + `num_samples` + `format_requirement` for the first domain | `config.json` | N/A |
-| 3 | Invoke the external tool to run ANDES for the current domain | `data_path`, `report_path` | N/A |
+| 3 | Invoke the ANDES tool to run synthesis for the current domain | `data_path`, `report_path` | N/A |
 | 4 | Read the report or evaluation summary + `task_description`, decide discard ratio (0% / 10% / 20%) | Discard decision | **MUST read both `andes_report_*.txt` and the corresponding `task_description`** |
-| 5 | Invoke the external tool to execute random discard | Retained data | N/A |
+| 5 | Invoke the ANDES tool to execute random discard | Retained data | N/A |
 | 6 | Repeat steps 2-5 until all initial domains complete | | N/A |
 | 7 | **Phase 1 complete**: if total >= 8000, proceed to aggregation; **Phase 2**: if total < 8000, add new domains (no discard) - **never skip initial domains** | Data volume decision | N/A |
 | 8 | Aggregate all retained data -> `${ANDES_WORKSPACE}/<benchmark>.json` | Deliverable | N/A |
@@ -77,12 +77,12 @@ The external system used in this workflow is **not an agent**. It is an **execut
 
 ### 3.3 Mandatory Step: Read Report and Decide Discard Ratio After Each Synthesis
 
-**After the external tool finishes ANDES synthesis for each domain, you MUST execute the following steps. Skipping or pre-setting discard ratios is strictly forbidden:**
+**After the ANDES tool finishes synthesis for each domain, the agent MUST execute the following steps. Skipping or pre-setting discard ratios is strictly forbidden:**
 
 1. **`read_file(andes_report_*.txt)`**: locate and read the most recently generated report file. If the tool runtime exposes an additional evaluation summary, read that artifact as well.
 2. **`read_file(config.json)` or the stored `task_description` for this domain**: retrieve the exact `task_description` that was used to generate this batch of data.
 3. **Analyze each Failure Signal F1-F7 against `task_description`**: cross-reference the failure signals in the report or evaluation summary with the original `task_description` to evaluate whether the generation stayed true to the intended capability dimensions and constraints. Record this comparison reasoning in the log.
-4. **Decide a specific discard ratio based on both the report and the `task_description`**: choose from **0% / 10% / 20%**, and record the decision reasoning in the log - including how the `task_description` informed the choice. **You make this decision; the external tool only executes the random discard afterward.**
+4. **Decide a specific discard ratio based on both the report and the `task_description`**: choose from **0% / 10% / 20%**, and record the decision reasoning in the log - including how the `task_description` informed the choice. **The agent makes this decision; the ANDES tool only executes the random discard afterward.**
 5. **Pre-setting fixed discard ratios is prohibited**: it is strictly forbidden to apply a uniform discard ratio to all domains without first reading the report, any tool-provided evaluation summary, and the corresponding `task_description`.
 
 > [!WARNING]
@@ -130,14 +130,14 @@ The key MUST come from the runtime environment; it is never written into a confi
 |-------|-------------|
 | `api_url` | OpenAI-compatible chat-completions endpoint (fixed for the run). |
 | `model_name` | Optional; defaults to `gpt-4o`. |
-| `task_description` | **Decided by you**; the external tool must not alter its semantic meaning. |
-| `num_samples` | **Decided by you.** |
+| `task_description` | **Decided by the agent**; the ANDES tool must not alter its semantic meaning. |
+| `num_samples` | **Decided by the agent.** |
 | `format_requirement` | **Decided only in the first round**, unchanged thereafter. |
 | `max_workers` | **Fixed at 100.** |
 
 ### 4.4 Tool Invocation Command
 
-Invoke the external tool with:
+Invoke the ANDES tool with:
 
 ```bash
 python -m andes.pipelines.agent_tool ${ANDES_WORKSPACE}/andes_config/config.json
@@ -177,7 +177,7 @@ Compare against `task_description`, focusing on:
 ## 6. Constraint Rules (Must Follow)
 
 > [!CRITICAL]
-> The following constraints are **non-negotiable hard requirements**. The Internal Agent MUST enforce them unconditionally.
+> The following constraints are **non-negotiable hard requirements**. The executing agent MUST enforce them unconditionally.
 
 ### G0: No Content Filtering - Only Random Discard
 
@@ -200,9 +200,9 @@ After random discard of each batch, **absolutely NO secondary filtering** (keywo
 
 **Training MUST NOT begin until ~8000 retained records are available. Do not terminate synthesis early on grounds of "sufficient quality."**
 
-**Timeout Exemption**: the only exception to the above rule is when the total elapsed time of the ANDES synthesis phase has exceeded **7 hours**. In this case only, you may proceed to training with whatever data is currently available. All other reasons - including "quality is good enough", "time is tight", or "initial domains are done" - are strictly prohibited.
+**Timeout Exemption**: the only exception to the above rule is when the total elapsed time of the ANDES synthesis phase has exceeded **7 hours**. In this case only, the agent may proceed to training with whatever data is currently available. All other reasons - including "quality is good enough", "time is tight", or "initial domains are done" - are strictly prohibited.
 
-**Phase Ordering**: you MUST complete all initially planned domains before synthesizing any new (expanded) domains. Synthesizing new domains before finishing the initial domain list is a violation of this constraint.
+**Phase Ordering**: the agent MUST complete all initially planned domains before synthesizing any new (expanded) domains. Synthesizing new domains before finishing the initial domain list is a violation of this constraint.
 
 ### G3: Disk 80% Mandatory Cleanup
 
@@ -262,9 +262,9 @@ save_only_model: true    # Save model weights only, reduces storage ~13G -> ~6.5
 ```text
 Step 1:  Research benchmark, split into ~6 domains
 Step 2:  Write task_description for first domain, determine num_samples, select format_requirement
-Step 3:  Invoke the external tool to run ANDES
+Step 3:  Invoke the ANDES tool to run synthesis
 Step 4:  Read report + task_description, then decide discard ratio (0% / 10% / 20%)
-Step 5:  Invoke the external tool to execute random discard
+Step 5:  Invoke the ANDES tool to execute random discard
 Step 6:  Switch to next domain, repeat 2-5 (complete ALL initial domains first)
 Step 7:  Phase 1 done - if total >= 8000, go to Step 8; if < 8000, add new domains (no discard)
          (ONLY exception: if synthesis elapsed time > 7 hours, proceed to training with available data)
