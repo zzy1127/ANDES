@@ -1,10 +1,7 @@
 <div align="center">
 
-<h1>
-  <img src="assets/andes_icon.png" alt="ANDES icon" width="46" height="46">
-  ANDES: Agent Native Data Evolving Synthesis<br>
-  Tool for Autonomous Instruction Alignment
-</h1>
+<h1><img src="assets/andes_icon.png" alt="ANDES icon" width="58" height="58" align="absmiddle"> ANDES: Agent Native Data Evolving Synthesis<br>
+Tool for Autonomous Instruction Alignment</h1>
 
 <p>
   <b>Zhengyang Zhao</b><sup>*1</sup>,
