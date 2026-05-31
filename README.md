@@ -1,76 +1,141 @@
-# ANDES: Agent Native Data Evolving Synthesis Tool for Autonomous Instruction Alignment
+<div align="center">
 
-#### Zhengyang Zhao (equal contribution), Shengjie Ye (equal contribution), Lu Ma, Hao Liang, Hengyi Feng, Wentao Zhang (corresponding author)
+<h1>ANDES</h1>
 
-#### Peking University; Sichuan University
+<h3>Agent Native Data Evolving Synthesis Tool for Autonomous Instruction Alignment</h3>
 
-ANDES is an agent-native data evolving synthesis tool that turns high-quality SFT data generation into a plug-and-play skill for autonomous post-training agents.
+<p>
+  <b>Zhengyang Zhao</b><sup>*1</sup>,
+  <b>Shengjie Ye</b><sup>*2</sup>,
+  Lu Ma<sup>1</sup>,
+  Hao Liang<sup>1</sup>,
+  Hengyi Feng<sup>1</sup>,
+  Wentao Zhang<sup>&dagger;1</sup>
+</p>
 
-[![Repo](https://img.shields.io/badge/GitHub-zzy1127%2FANDES-181717?logo=github)](https://github.com/zzy1127/ANDES)
-[![License](https://img.shields.io/badge/License-Apache--2.0-green)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-%3E%3D3.10-blue?logo=python)](pyproject.toml)
-[![Preprint](https://img.shields.io/badge/Paper-Preprint-red)](#citation)
+<p>
+  <sup>1</sup>Peking University &nbsp;&nbsp;
+  <sup>2</sup>Sichuan University &nbsp;&nbsp;
+  <sup>*</sup>Equal contribution &nbsp;&nbsp;
+  <sup>&dagger;</sup>Corresponding author
+</p>
+
+<p>
+  <a href="https://github.com/zzy1127/ANDES"><img src="https://img.shields.io/badge/GitHub-zzy1127%2FANDES-181717?logo=github" alt="GitHub"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-green" alt="License"></a>
+  <a href="pyproject.toml"><img src="https://img.shields.io/badge/Python-%3E%3D3.10-blue?logo=python" alt="Python"></a>
+  <a href="#citation"><img src="https://img.shields.io/badge/Paper-Preprint-red" alt="Preprint"></a>
+  <a href="#quick-start"><img src="https://img.shields.io/badge/API-OpenAI--compatible-6f42c1" alt="API"></a>
+</p>
+
+<p>
+  <a href="#news">News</a> |
+  <a href="#highlights">Highlights</a> |
+  <a href="#overview">Overview</a> |
+  <a href="#quick-start">Quick Start</a> |
+  <a href="#results">Results</a> |
+  <a href="#citation">Citation</a>
+</p>
+
+<p>
+  <b>ANDES turns high-quality SFT data generation into a plug-and-play agent skill for autonomous post-training.</b>
+</p>
+
+</div>
 
 ## News
 
-- **2026.05.31** We release the ANDES preprint and initial open-source repository.
-- **Coming soon** We will continue updating core code documentation, supported model recipes, and citation metadata.
+| Date | Update |
+| --- | --- |
+| 2026.05.31 | The ANDES preprint and initial open-source repository are released. |
+| Coming soon | Core-code documentation, supported model recipes, and citation metadata will be updated. |
 
 ## Highlights
 
-- **Agent-native synthesis skill:** ANDES exposes data generation as a simple tool-calling interface, allowing trainer agents to request targeted data without designing a full web-search or offline synthesis pipeline from scratch.
-- **Self-evolving World Tree routing:** A Topic -> Theme -> Scenario taxonomy routes synthesis toward target-aligned regions while dynamically expanding crowded nodes to preserve scenario diversity.
-- **Two-stage QA generation and refinement:** ANDES first generates raw QA data, then critiques, filters, rewrites, and summarizes it with quality and logical-diversity diagnostics.
-- **Report-driven closed loop:** Each call returns refined data plus a synthesis report, so the trainer agent can adjust later requests based on topic distribution, effective sample count, and collapse patterns.
-- **Strong autonomous post-training results:** In the paper setting, GLM-4.7 equipped with ANDES reaches **33.39%** average accuracy on PostTrainBench, outperforming Opus-4.7 at **28.56%**.
+<table>
+  <tr>
+    <td width="50%">
+      <img src="https://img.shields.io/badge/Agent Skill-plug--and--play-4c78a8" alt="Agent Skill"><br><br>
+      Exposes data synthesis as a simple tool-calling interface, so trainer agents can request targeted data without hand-building web-search or static offline pipelines.
+    </td>
+    <td width="50%">
+      <img src="https://img.shields.io/badge/World Tree-self--evolving-59a14f" alt="World Tree"><br><br>
+      Routes Topic -> Theme -> Scenario samples toward target-aligned regions while expanding saturated subtrees to preserve scenario diversity.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="https://img.shields.io/badge/Synthesis-generate%20%2B%20refine-8a63d2" alt="Synthesis"><br><br>
+      Generates QA data, critiques and filters responses, rewrites retained samples, and summarizes logical-diversity risks for the agent.
+    </td>
+    <td width="50%">
+      <img src="https://img.shields.io/badge/Feedback-report--driven-f28e2b" alt="Feedback"><br><br>
+      Returns refined data plus a diagnostic report that drives the next synthesis request, active filtering, and sample-budget adjustment.
+    </td>
+  </tr>
+</table>
+
+<table align="center">
+  <tr>
+    <th>PostTrainBench Avg.</th>
+    <th>Strongest Agent Baseline</th>
+    <th>Cross-Task Overall</th>
+    <th>Initial World Tree</th>
+  </tr>
+  <tr>
+    <td align="center"><b>33.39%</b></td>
+    <td align="center">Opus-4.7 at <b>28.56%</b></td>
+    <td align="center"><b>58.9%</b> with 10k ANDES data</td>
+    <td align="center"><b>72</b> topics, <b>394</b> themes, <b>1,182</b> scenarios</td>
+  </tr>
+</table>
 
 ## Overview
 
-![ANDES Overview](assets/andes_overview.png)
+<div align="center">
+  <img src="assets/andes_overview.png" alt="ANDES framework overview" width="96%">
+</div>
 
 > **TLDR:** ANDES reframes data synthesis for autonomous post-training as an interactive agent skill. A trainer agent decomposes downstream benchmarks into capability domains, invokes ANDES once per domain, and uses the returned reports to steer the next synthesis round.
 
-ANDES is built around four stages:
+ANDES is organized around four stages:
 
-1. **Target-driven agent request:** the trainer agent abstracts downstream benchmarks into transferable capability dimensions and submits a task description, sample budget, and optional format protocol.
-2. **Self-evolving dynamic World Tree routing:** ANDES samples topics from a large taxonomy, uses an LLM router to classify each scenario as strong, ambiguous, or weak for the target task, and updates topic weights accordingly.
-3. **Two-stage data synthesis:** the generator creates task-aligned or general QA data, then the refiner critiques, filters, rewrites, and audits logical diversity.
-4. **Outputs and feedback:** ANDES returns refined SFT data and a report that helps the trainer agent actively filter data and configure the next call.
+| Stage | What happens |
+| --- | --- |
+| **1. Target-driven agent request** | The trainer agent abstracts downstream benchmarks into transferable capability dimensions and submits a task description, sample budget, and optional format protocol. |
+| **2. Self-evolving World Tree routing** | ANDES samples topics from a large taxonomy, asks a router LLM to classify each scenario as Strong, Ambiguous, or Weak, and updates topic weights toward target-aligned regions. |
+| **3. Two-stage data synthesis** | The generator creates task-aligned or general QA data; the refiner critiques, filters, rewrites, and audits logical diversity. |
+| **4. Outputs and feedback** | ANDES returns refined SFT data and a report that helps the trainer agent filter data and configure the next call. |
 
 ## Core Codes and Supported Models
 
 The current implementation focuses on API-based SFT data synthesis for agentic post-training.
 
-| Component | Path |
+| Component | Entry point |
 | --- | --- |
-| Agent tool entry point | [`andes/pipelines/agent_tool.py`](andes/pipelines/agent_tool.py) |
-| ANDES generator | [`andes/operators/text_sft/generate/andes_generator.py`](andes/operators/text_sft/generate/andes_generator.py) |
-| ANDES refiner and report builder | [`andes/operators/text_sft/refine/andes_refiner.py`](andes/operators/text_sft/refine/andes_refiner.py) |
+| Agent tool pipeline | [`andes/pipelines/agent_tool.py`](andes/pipelines/agent_tool.py) |
+| QA generation operator | [`andes/operators/text_sft/generate/andes_generator.py`](andes/operators/text_sft/generate/andes_generator.py) |
+| Refinement and report operator | [`andes/operators/text_sft/refine/andes_refiner.py`](andes/operators/text_sft/refine/andes_refiner.py) |
 | Prompt templates and World Tree tags | [`andes/prompts/andes_prompts.py`](andes/prompts/andes_prompts.py) |
-| API LLM serving wrapper | [`andes/serving/api_llm_serving_request.py`](andes/serving/api_llm_serving_request.py) |
-| Example config | [`examples/config.example.json`](examples/config.example.json) |
+| OpenAI-compatible API wrapper | [`andes/serving/api_llm_serving_request.py`](andes/serving/api_llm_serving_request.py) |
+| Runnable config example | [`examples/config.example.json`](examples/config.example.json) |
 
-**Supported models:** Coming soon. The current public package is model-agnostic at the data-synthesis layer and uses an OpenAI-compatible API backend for routing, generation, refinement, evolution, and diversity summarization.
+**Supported models:** Coming soon. The public package is model-agnostic at the data-synthesis layer and uses an OpenAI-compatible API backend for routing, generation, refinement, evolution, and diversity summarization.
 
 ## Preparation
-
-1. Clone this repository:
 
 ```bash
 git clone https://github.com/zzy1127/ANDES.git
 cd ANDES
-```
 
-2. Create an environment and install ANDES:
-
-```bash
 conda create -n andes python=3.10 -y
 conda activate andes
+
 pip install --upgrade pip
 pip install -e .
 ```
 
-3. Configure your API key:
+Configure the API key in your shell rather than in a JSON file:
 
 ```bash
 export OPENAI_API_KEY=your_api_key
@@ -78,7 +143,7 @@ export OPENAI_API_KEY=your_api_key
 
 ## Quick Start
 
-Edit [`examples/config.example.json`](examples/config.example.json) or create a JSON config with the required fields:
+Edit [`examples/config.example.json`](examples/config.example.json) or create a compatible JSON config:
 
 ```json
 {
@@ -91,7 +156,7 @@ Edit [`examples/config.example.json`](examples/config.example.json) or create a 
 }
 ```
 
-Run the ANDES agent tool:
+Run one synthesis call:
 
 ```bash
 python -m andes.pipelines.agent_tool examples/config.example.json
@@ -99,14 +164,14 @@ python -m andes.pipelines.agent_tool examples/config.example.json
 
 The command prints two artifact paths:
 
-- `andes_synthesis_<timestamp>.jsonl`: refined SFT data.
-- `andes_report_<timestamp>.txt`: logical-diversity and synthesis diagnostics for the next agent call.
+| Artifact | Meaning |
+| --- | --- |
+| `andes_synthesis_<timestamp>.jsonl` | Refined SFT data ready for downstream training. |
+| `andes_report_<timestamp>.txt` | Logical-diversity and synthesis diagnostics for the next agent call. |
 
 Artifacts are written to `andes/pipelines/cache/`.
 
-`format_requirement` currently supports:
-
-| Value | Behavior |
+| `format_requirement` | Behavior |
 | --- | --- |
 | `unstructured` | No extra answer-format constraint. |
 | `code` | Fusion-track answers must be wrapped in a Markdown code block. |
@@ -114,11 +179,13 @@ Artifacts are written to `andes/pipelines/cache/`.
 
 ## Results
 
-![PostTrainBench Results](assets/posttrainbench_results.png)
+<div align="center">
+  <img src="assets/posttrainbench_results.png" alt="PostTrainBench results" width="88%">
+</div>
 
 ### Autonomous Post-Training on PostTrainBench
 
-Under the official PostTrainBench setting, ANDES is evaluated across four base models and seven benchmarks: AIME 2025, ArenaHardWriting, BFCL, GPQA-Main, GSM8K, HealthBench, and HumanEval.
+ANDES is evaluated across four base models and seven PostTrainBench benchmarks: AIME 2025, ArenaHardWriting, BFCL, GPQA-Main, GSM8K, HealthBench, and HumanEval.
 
 | Method | Average Accuracy |
 | --- | ---: |
@@ -130,7 +197,7 @@ Under the official PostTrainBench setting, ANDES is evaluated across four base m
 
 ### Cross-Task Generalization
 
-In the extended multi-target synthesis setting, ANDES uses 10k synthesized samples for Qwen3-8B and reaches **58.9%** overall across AIME24, Gaokao, MBPP, MMLU, and CEVAL, outperforming 10k and 1M static-data baselines reported in the paper.
+In the extended multi-target synthesis setting, ANDES uses 10k synthesized samples for Qwen3-8B and reaches **58.9%** overall across AIME24, Gaokao, MBPP, MMLU, and CEVAL, outperforming the 10k and 1M static-data baselines reported in the paper.
 
 ## Citation
 
