@@ -1,8 +1,6 @@
 <div align="center">
 
-<h1>ANDES</h1>
-
-<h3>Agent Native Data Evolving Synthesis Tool for Autonomous Instruction Alignment</h3>
+<h1><img src="assets/andes_icon.png" alt="ANDES icon" width="54"> ANDES: Agent Native Data Evolving Synthesis Tool for Autonomous Instruction Alignment</h1>
 
 <p>
   <b>Zhengyang Zhao</b><sup>*1</sup>,
@@ -38,7 +36,7 @@
 </p>
 
 <p>
-  <b>ANDES turns high-quality SFT data generation into a plug-and-play agent skill for autonomous post-training.</b>
+  <b>An agent-native synthesis skill that turns high-quality SFT data generation into a steerable, closed-loop interface for autonomous post-training.</b>
 </p>
 
 </div>
@@ -54,22 +52,26 @@
 
 <table>
   <tr>
-    <td width="50%">
-      <img src="https://img.shields.io/badge/Agent Skill-plug--and--play-4c78a8" alt="Agent Skill"><br><br>
+    <td width="50%" valign="top">
+      <img src="assets/icons/agent_skill.svg" alt="Agent skill icon" width="58" align="left">
+      <b>Agent-native synthesis skill</b><br>
       Exposes data synthesis as a simple tool-calling interface, so trainer agents can request targeted data without hand-building web-search or static offline pipelines.
     </td>
-    <td width="50%">
-      <img src="https://img.shields.io/badge/World Tree-self--evolving-59a14f" alt="World Tree"><br><br>
+    <td width="50%" valign="top">
+      <img src="assets/icons/world_tree.svg" alt="World Tree icon" width="58" align="left">
+      <b>Self-evolving World Tree routing</b><br>
       Routes Topic -> Theme -> Scenario samples toward target-aligned regions while expanding saturated subtrees to preserve scenario diversity.
     </td>
   </tr>
   <tr>
-    <td width="50%">
-      <img src="https://img.shields.io/badge/Synthesis-generate%20%2B%20refine-8a63d2" alt="Synthesis"><br><br>
+    <td width="50%" valign="top">
+      <img src="assets/icons/synthesis_refine.svg" alt="Synthesis and refine icon" width="58" align="left">
+      <b>Two-stage generation and refinement</b><br>
       Generates QA data, critiques and filters responses, rewrites retained samples, and summarizes logical-diversity risks for the agent.
     </td>
-    <td width="50%">
-      <img src="https://img.shields.io/badge/Feedback-report--driven-f28e2b" alt="Feedback"><br><br>
+    <td width="50%" valign="top">
+      <img src="assets/icons/feedback_report.svg" alt="Feedback report icon" width="58" align="left">
+      <b>Report-driven closed-loop feedback</b><br>
       Returns refined data plus a diagnostic report that drives the next synthesis request, active filtering, and sample-budget adjustment.
     </td>
   </tr>
@@ -93,7 +95,7 @@
 ## Overview
 
 <div align="center">
-  <img src="assets/andes_overview.png" alt="ANDES framework overview" width="96%">
+  <img src="assets/andes_overview.png" alt="ANDES framework overview" width="100%">
 </div>
 
 > **TLDR:** ANDES reframes data synthesis for autonomous post-training as an interactive agent skill. A trainer agent decomposes downstream benchmarks into capability domains, invokes ANDES once per domain, and uses the returned reports to steer the next synthesis round.
@@ -180,7 +182,7 @@ Artifacts are written to `andes/pipelines/cache/`.
 ## Results
 
 <div align="center">
-  <img src="assets/posttrainbench_results.png" alt="PostTrainBench results" width="88%">
+  <img src="assets/posttrainbench_results.png" alt="PostTrainBench results" width="96%">
 </div>
 
 ### Autonomous Post-Training on PostTrainBench
