@@ -1,9 +1,8 @@
 <div align="center">
 
 <h1 align="center">
-  <sup><img src="assets/andes_icon.png" alt="ANDES icon" width="72" height="72" align="absmiddle"></sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  ANDES: Agent Native Data<br>
-  <small><small>Evolving&nbsp;Synthesis&nbsp;Tool&nbsp;for&nbsp;Autonomous&nbsp;Instruction&nbsp;Alignment</small></small>
+  <img src="assets/andes_icon.png" alt="ANDES icon" width="72" height="72" align="absmiddle">&nbsp;&nbsp;&thinsp;ANDES:&nbsp;Agent&nbsp;Native&nbsp;Data&nbsp;Evolving<br>
+  <small>Synthesis&nbsp;Tool&nbsp;for&nbsp;Autonomous&nbsp;Instruction&nbsp;Alignment</small>
 </h1>
 
 <p>
