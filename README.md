@@ -1,9 +1,9 @@
 <div align="center">
 
 <h1 align="center">
-  <img src="assets/andes_icon.png" alt="ANDES icon" width="72" height="72" align="absmiddle">&nbsp;&nbsp;&nbsp;
+  <sup><img src="assets/andes_icon.png" alt="ANDES icon" width="72" height="72" align="absmiddle"></sup>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   ANDES: Agent Native Data<br>
-  <small>Evolving Synthesis Tool for Autonomous Instruction Alignment</small>
+  <small><small>Evolving&nbsp;Synthesis&nbsp;Tool&nbsp;for&nbsp;Autonomous&nbsp;Instruction&nbsp;Alignment</small></small>
 </h1>
 
 <p>
