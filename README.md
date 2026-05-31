@@ -1,7 +1,10 @@
 <div align="center">
 
-<h1><img src="assets/andes_icon.png" alt="ANDES icon" width="58" height="58" align="absmiddle"> ANDES: Agent Native Data Evolving Synthesis<br>
-Tool for Autonomous Instruction Alignment</h1>
+<h1 align="center">
+  <img src="assets/andes_icon.png" alt="ANDES icon" width="72" height="72" align="absmiddle">
+  ANDES: Agent Native Data<br>
+  Evolving Synthesis Tool for Autonomous Instruction Alignment
+</h1>
 
 <p>
   <b>Zhengyang Zhao</b><sup>*1</sup>,
@@ -182,7 +185,7 @@ Artifacts are written to `andes/pipelines/cache/`.
   <img src="assets/posttrainbench_results.png" alt="PostTrainBench results" width="98%">
 </div>
 
-### Autonomous Post-Training on PostTrainBench
+### 🏆 Autonomous Post-Training on PostTrainBench
 
 ANDES is evaluated across four base models and seven PostTrainBench benchmarks: AIME 2025, ArenaHardWriting, BFCL, GPQA-Main, GSM8K, HealthBench, and HumanEval.
 
@@ -202,9 +205,17 @@ Beyond the final score, the paper shows that ANDES improves autonomous post-trai
 | Opus-4.7 (xHigh) | 28.56% |
 | **GLM-4.7 with ANDES** | **33.39%** |
 
-### Cross-Task Generalization
+### 🌐 Cross-Task Generalization
 
 In the extended multi-target synthesis setting, ANDES uses 10k synthesized samples for Qwen3-8B and reaches **58.9%** overall across AIME24, Gaokao, MBPP, MMLU, and CEVAL, outperforming the 10k and 1M static-data baselines reported in the paper.
+
+| Method | Data Volume | AIME24 | Gaokao | MBPP | MMLU | CEval | Overall |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Base Model (Qwen3-8B-Base) | - | 13.3 | 35.2 | 82.5 | 73.0 | 82.5 | 57.3 |
+| + Infinstruct | 10k | 0.0 (↓13.3) | 34.1 (↓1.1) | 76.2 (↓6.3) | 74.2 (↑1.2) | 81.3 (↓1.2) | 53.2 (↓4.1) |
+| + Infinstruct | 1M | 0.0 (↓13.3) | 28.6 (↓6.6) | 70.1 (↓12.4) | 71.3 (↓1.7) | 77.9 (↓4.6) | 49.6 (↓7.7) |
+| + Dataflow | 10k | 10.0 (↓3.3) | 31.9 (↓3.3) | 77.2 (↓5.3) | 74.6 (↑1.6) | 82.1 (↓0.4) | 55.2 (↓2.1) |
+| **+ ANDES (Ours)** | **10k** | **10.0 (↓3.3)** | **49.5 (↑14.3)** | **77.7 (↓4.8)** | **74.8 (↑1.8)** | **82.4 (↓0.1)** | **58.9 (↑1.6)** |
 
 ## 📚 Citation
 
