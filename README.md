@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1><img src="assets/andes_icon.png" alt="ANDES icon" width="54"> ANDES: Agent Native Data Evolving Synthesis Tool for Autonomous Instruction Alignment</h1>
+<h1><img src="assets/andes_icon.png" alt="ANDES icon" width="44" height="44"> ANDES: Agent Native Data Evolving Synthesis Tool for Autonomous Instruction Alignment</h1>
 
 <p>
   <b>Zhengyang Zhao</b><sup>*1</sup>,
@@ -41,14 +41,14 @@
 
 </div>
 
-## News
+## <img src="assets/icons/news.svg" alt="News" width="28"> News
 
 | Date | Update |
 | --- | --- |
 | 2026.05.31 | The ANDES preprint and initial open-source repository are released. |
 | Coming soon | Core-code documentation, supported model recipes, and citation metadata will be updated. |
 
-## Highlights
+## <img src="assets/icons/highlights.svg" alt="Highlights" width="28"> Highlights
 
 <table>
   <tr>
@@ -92,7 +92,7 @@
   </tr>
 </table>
 
-## Overview
+## <img src="assets/icons/overview.svg" alt="Overview" width="28"> Overview
 
 <div align="center">
   <img src="assets/andes_overview.png" alt="ANDES framework overview" width="100%">
@@ -109,7 +109,7 @@ ANDES is organized around four stages:
 | **3. Two-stage data synthesis** | The generator creates task-aligned or general QA data; the refiner critiques, filters, rewrites, and audits logical diversity. |
 | **4. Outputs and feedback** | ANDES returns refined SFT data and a report that helps the trainer agent filter data and configure the next call. |
 
-## Core Codes and Supported Models
+## <img src="assets/icons/core_codes.svg" alt="Core codes" width="28"> Core Codes and Supported Models
 
 The current implementation focuses on API-based SFT data synthesis for agentic post-training.
 
@@ -124,7 +124,7 @@ The current implementation focuses on API-based SFT data synthesis for agentic p
 
 **Supported models:** Coming soon. The public package is model-agnostic at the data-synthesis layer and uses an OpenAI-compatible API backend for routing, generation, refinement, evolution, and diversity summarization.
 
-## Preparation
+## <img src="assets/icons/preparation.svg" alt="Preparation" width="28"> Preparation
 
 ```bash
 git clone https://github.com/zzy1127/ANDES.git
@@ -143,7 +143,7 @@ Configure the API key in your shell rather than in a JSON file:
 export OPENAI_API_KEY=your_api_key
 ```
 
-## Quick Start
+## <img src="assets/icons/quick_start.svg" alt="Quick start" width="28"> Quick Start
 
 Edit [`examples/config.example.json`](examples/config.example.json) or create a compatible JSON config:
 
@@ -179,15 +179,23 @@ Artifacts are written to `andes/pipelines/cache/`.
 | `code` | Fusion-track answers must be wrapped in a Markdown code block. |
 | `tool_call` | Fusion-track answers must be wrapped as JSON tool calls. |
 
-## Results
+## <img src="assets/icons/results.svg" alt="Results" width="28"> Results
 
 <div align="center">
-  <img src="assets/posttrainbench_results.png" alt="PostTrainBench results" width="96%">
+  <img src="assets/posttrainbench_results.png" alt="PostTrainBench results" width="98%">
 </div>
 
 ### Autonomous Post-Training on PostTrainBench
 
 ANDES is evaluated across four base models and seven PostTrainBench benchmarks: AIME 2025, ArenaHardWriting, BFCL, GPQA-Main, GSM8K, HealthBench, and HumanEval.
+
+Beyond the final score, the paper shows that ANDES improves autonomous post-training because it upgrades the data loop itself:
+
+| Advantage | What ANDES changes |
+| --- | --- |
+| **Data quality** | The generator first creates task-grounded QA pairs, then a refiner critiques each response, filters high-effort low-quality samples, rewrites retained answers, and reports logical-diversity collapse signals. This makes the synthesized data more trainable than one-shot static generation. |
+| **Data generality** | The World Tree covers broad scenario space and evolves saturated subtrees, preserving general contextual diversity while routing more budget toward target-aligned capability regions. This helps explain the cross-task result of **58.9%** overall with only 10k ANDES samples. |
+| **Complete post-training pipeline** | ANDES is not an isolated data script: it returns data plus reports that trainer agents use to filter, rebalance, and configure the next call, closing the loop between diagnosis, synthesis, training, and evaluation. |
 
 | Method | Average Accuracy |
 | --- | ---: |
@@ -201,15 +209,15 @@ ANDES is evaluated across four base models and seven PostTrainBench benchmarks: 
 
 In the extended multi-target synthesis setting, ANDES uses 10k synthesized samples for Qwen3-8B and reaches **58.9%** overall across AIME24, Gaokao, MBPP, MMLU, and CEVAL, outperforming the 10k and 1M static-data baselines reported in the paper.
 
-## Citation
+## <img src="assets/icons/citation.svg" alt="Citation" width="28"> Citation
 
 Coming soon. Citation metadata will be added after the public paper record is finalized.
 
-## Acknowledgment
+## <img src="assets/icons/acknowledgment.svg" alt="Acknowledgment" width="28"> Acknowledgment
 
 We build the codebase on the DataFlow framework and evaluate the autonomous post-training setting with PostTrainBench. We thank the open-source post-training, data-synthesis, and agent-tooling communities for the foundations that made this work possible.
 
-## Contact
+## <img src="assets/icons/contact.svg" alt="Contact" width="28"> Contact
 
 For questions about the paper or code, please contact:
 
