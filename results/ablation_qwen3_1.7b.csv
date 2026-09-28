@@ -1,0 +1,6 @@
+variant,aime_2025,arenahard,bfcl,gpqa_main,gsm8k,healthbench,humaneval,weighted_avg
+GLM-4.7 OpenCode,0.00,0.91,0.00,14.06,12.66,7.54,12.20,7.11
+ANDES without World Tree,0.00,4.92,70.00,22.22,49.00,26.72,54.71,25.97
+ANDES without report-driven interaction,0.00,8.02,68.00,25.41,59.86,22.61,50.01,26.58
+ANDES with Gemini-3.1-Flash backend,0.00,13.84,92.00,24.37,64.37,27.67,57.83,30.84
+Full ANDES with GPT-4o backend,0.00,14.22,90.16,28.48,63.19,27.08,57.51,31.41

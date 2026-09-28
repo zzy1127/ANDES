@@ -93,12 +93,12 @@ The agent controls planning, benchmark interpretation, quality judgment, and fin
 ### 4.1 Installation
 
 ```bash
-git clone https://github.com/your-org/andes.git
-cd andes
+git clone https://github.com/zzy1127/ANDES.git
+cd ANDES
 pip install -e .
 ```
 
-- Repository: `your-org/andes`
+- Repository: `zzy1127/ANDES`
 - Working directory: `${ANDES_WORKSPACE}` (default: an isolated sandbox path used by the tool runtime)
 - Environment: sandboxed runtime (e.g. container or jail)
 

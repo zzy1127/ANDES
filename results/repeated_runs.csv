@@ -1,0 +1,5 @@
+base_model,aime_2025_mean,aime_2025_std,arenahard_mean,arenahard_std,bfcl_mean,bfcl_std,gpqa_main_mean,gpqa_main_std,gsm8k_mean,gsm8k_std,healthbench_mean,healthbench_std,humaneval_mean,humaneval_std,weighted_avg_mean,weighted_avg_std
+Qwen3-1.7B,0.00,0.00,14.22,1.30,90.16,1.60,28.48,0.80,63.19,1.20,27.08,1.40,57.51,2.00,31.41,0.70
+Qwen3-4B,9.00,1.70,51.94,0.85,91.22,0.60,31.40,2.20,83.63,1.10,31.07,1.45,66.62,1.55,41.21,0.66
+SmolLM3-3B,6.60,1.20,15.21,1.35,79.91,1.55,27.00,1.10,68.67,1.45,38.50,1.70,42.42,1.85,32.91,0.78
+Gemma3-4B,0.00,0.00,26.55,1.40,86.09,1.25,26.83,0.95,77.92,1.50,34.46,1.60,33.59,1.35,32.05,0.72

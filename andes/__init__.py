@@ -1,7 +1,7 @@
 """ANDES — Agent-Native Data Evolving Synthesis.
 
-A lightweight, API-only data synthesis pipeline that combines a dynamic
-taxonomy router, a question/answer generator, and a self-critique refiner.
+A feedback-controlled experience-acquisition framework for autonomous LLM
+post-training, built around a self-evolving World Tree and synthesis reports.
 """
 
 from .logger import get_logger
