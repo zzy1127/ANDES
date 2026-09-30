@@ -1,9 +1,8 @@
 <div align="center">
 
 <h1 align="center">
-  <img src="assets/andes_icon.png" alt="ANDES icon" width="72" height="72" align="absmiddle">&nbsp;&nbsp;
-  ANDES: Agent-Native Data Evolving Synthesis<br>
-  <small>via Feedback-Controlled Experience Acquisition</small>
+  <img src="assets/andes_icon.png" alt="ANDES icon" width="72" height="72" align="absmiddle">&nbsp;&nbsp;&thinsp;ANDES:&nbsp;Agent&nbsp;Native&nbsp;Data&nbsp;Evolving<br>
+  <small>Synthesis&nbsp;Tool&nbsp;for&nbsp;Autonomous&nbsp;Instruction&nbsp;Alignment</small>
 </h1>
 
 <p>
@@ -40,7 +39,7 @@
 </p>
 
 <p>
-  <b>Feedback-controlled experience acquisition for autonomous LLM post-training.</b>
+  <b>An agent-native synthesis skill that turns high-quality SFT data generation into a steerable, closed-loop interface for autonomous post-training.</b>
 </p>
 
 </div>
@@ -49,30 +48,30 @@
 
 | Date | Update |
 | --- | --- |
-| 2026.09.28 | Updated the paper framing, PostTrainBench results, four-run statistics, ablations, held-out transfer evaluation, and repository figures. |
-| 2026.05.31 | Released the initial ANDES preprint and open-source repository. |
+| 2026.05.31 | The ANDES preprint and initial open-source repository are released. |
+| Coming soon | Core-code documentation, supported model recipes, and citation metadata will be updated. |
 
 ## ✨ Highlights
 
 <table>
   <tr>
     <td width="50%" valign="top">
-      <b>🔁 Feedback-controlled experience acquisition</b><br>
-      Treats data synthesis as a sequential acquisition problem: observations from each synthesis round guide where subsequent supervision is acquired.
+      <b>🧠 Agent-native synthesis skill</b><br>
+      Exposes data synthesis as a simple tool-calling interface, so trainer agents can request targeted data without hand-building web-search or static offline pipelines.
     </td>
     <td width="50%" valign="top">
-      <b>🌳 Self-evolving World Tree</b><br>
-      Models the synthesis space as a Topic → Theme → Scenario hierarchy, reallocates sampling toward relevant regions, and expands repeatedly selected subtrees.
+      <b>🌳 Self-evolving World Tree routing</b><br>
+      Routes Topic -> Theme -> Scenario samples toward target-aligned regions while expanding saturated subtrees to preserve scenario diversity.
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <b>🛠️ Quality-aware two-stage synthesis</b><br>
-      Generates QA pairs, critiques and refines responses, filters high-effort failures, and diagnoses repeated reasoning templates.
+      <b>🛠️ Two-stage generation and refinement</b><br>
+      Generates QA data, critiques and filters responses, rewrites retained samples, and summarizes logical-diversity risks for the agent.
     </td>
     <td width="50%" valign="top">
-      <b>📊 Report-driven adaptation</b><br>
-      Summarizes effective quantity, topical allocation, and logical diversity so the trainer can revise subsequent acquisition requests.
+      <b>🔁 Report-driven closed-loop feedback</b><br>
+      Returns refined data plus a diagnostic report that drives the next synthesis request, active filtering, and sample-budget adjustment.
     </td>
   </tr>
 </table>
@@ -80,14 +79,14 @@
 <table align="center">
   <tr>
     <th>PostTrainBench Avg.</th>
-    <th>Gain over Scaffold-only</th>
-    <th>Repeated Runs</th>
+    <th>Strongest Agent Baseline</th>
+    <th>Cross-Task Overall</th>
     <th>Initial World Tree</th>
   </tr>
   <tr>
-    <td align="center"><b>34.40%</b></td>
-    <td align="center"><b>+12.84</b> points</td>
-    <td align="center"><b>4</b> base models × <b>4</b> runs</td>
+    <td align="center"><b>33.39%</b></td>
+    <td align="center">Opus-4.7 at <b>28.56%</b></td>
+    <td align="center"><b>58.9%</b> with 10k ANDES data</td>
     <td align="center"><b>72</b> topics, <b>394</b> themes, <b>1,182</b> scenarios</td>
   </tr>
 </table>
@@ -98,20 +97,20 @@
   <img src="assets/andes_overview.png" alt="ANDES framework overview" width="100%">
 </div>
 
-> **TL;DR:** ANDES instantiates feedback-controlled experience acquisition for autonomous LLM post-training. A trainer maps a downstream objective to capability targets, ANDES adapts an acquisition distribution over a self-evolving World Tree, and synthesis diagnostics guide subsequent acquisition decisions.
+> **TLDR:** ANDES reframes data synthesis for autonomous post-training as an interactive agent skill. A trainer agent decomposes downstream benchmarks into capability domains, invokes ANDES once per domain, and uses the returned reports to steer the next synthesis round.
 
 ANDES is organized around four stages:
 
-| Stage | Role in the acquisition loop |
+| Stage | What happens |
 | --- | --- |
-| **1. Target-driven agent request** | Abstracts a downstream objective into transferable capability targets and specifies the sample budget and output protocol. |
-| **2. Self-evolving World Tree routing** | Reallocates probability mass toward target-relevant contexts while retaining exploration and expanding saturated subtrees. |
-| **3. Two-stage data synthesis** | Realizes selected contexts as QA supervision, critiques and refines responses, and measures batch-level logical redundancy. |
-| **4. Outputs and feedback** | Returns refined data and a synthesis report that conditions data retention and subsequent acquisition requests. |
+| **1. Target-driven agent request** | The trainer agent abstracts downstream benchmarks into transferable capability dimensions and submits a task description, sample budget, and optional format protocol. |
+| **2. Self-evolving World Tree routing** | ANDES samples topics from a large taxonomy, asks a router LLM to classify each scenario as Strong, Ambiguous, or Weak, and updates topic weights toward target-aligned regions. |
+| **3. Two-stage data synthesis** | The generator creates task-aligned or general QA data; the refiner critiques, filters, rewrites, and audits logical diversity. |
+| **4. Outputs and feedback** | ANDES returns refined SFT data and a report that helps the trainer agent filter data and configure the next call. |
 
-## 🧩 Core Code
+## 🧩 Core Codes and Supported Models
 
-The public implementation uses an OpenAI-compatible API backend and exposes the full synthesis path:
+The current implementation focuses on API-based SFT data synthesis for agentic post-training.
 
 | Component | Entry point |
 | --- | --- |
@@ -120,10 +119,9 @@ The public implementation uses an OpenAI-compatible API backend and exposes the 
 | Refinement and report operator | [`andes/operators/text_sft/refine/andes_refiner.py`](andes/operators/text_sft/refine/andes_refiner.py) |
 | Prompt templates and World Tree tags | [`andes/prompts/andes_prompts.py`](andes/prompts/andes_prompts.py) |
 | OpenAI-compatible API wrapper | [`andes/serving/api_llm_serving_request.py`](andes/serving/api_llm_serving_request.py) |
-| Agent-facing synthesis skill | [`skills/SKILL.md`](skills/SKILL.md) |
-| Runnable configuration | [`examples/config.example.json`](examples/config.example.json) |
+| Runnable config example | [`examples/config.example.json`](examples/config.example.json) |
 
-The data-synthesis layer is model-agnostic. The paper uses GPT-4o for the default internal modules and additionally evaluates replacing all internal LLM modules with Gemini-3.1-Flash.
+**Supported models:** Coming soon. The public package is model-agnostic at the data-synthesis layer and uses an OpenAI-compatible API backend for routing, generation, refinement, evolution, and diversity summarization.
 
 ## 🛠️ Preparation
 
@@ -138,7 +136,7 @@ pip install --upgrade pip
 pip install -e .
 ```
 
-Configure the API key in the environment:
+Configure the API key in your shell rather than in a JSON file:
 
 ```bash
 export OPENAI_API_KEY=your_api_key
@@ -146,7 +144,7 @@ export OPENAI_API_KEY=your_api_key
 
 ## 🚀 Quick Start
 
-Edit [`examples/config.example.json`](examples/config.example.json) or create a compatible JSON configuration:
+Edit [`examples/config.example.json`](examples/config.example.json) or create a compatible JSON config:
 
 ```json
 {
@@ -165,116 +163,70 @@ Run one synthesis call:
 python -m andes.pipelines.agent_tool examples/config.example.json
 ```
 
-The command writes:
+The command prints two artifact paths:
 
 | Artifact | Meaning |
 | --- | --- |
-| `andes_synthesis_<timestamp>.jsonl` | Refined SFT data for downstream training. |
-| `andes_report_<timestamp>.txt` | Quantity, allocation, and logical-diversity diagnostics for the next acquisition decision. |
+| `andes_synthesis_<timestamp>.jsonl` | Refined SFT data ready for downstream training. |
+| `andes_report_<timestamp>.txt` | Logical-diversity and synthesis diagnostics for the next agent call. |
 
 Artifacts are written to `andes/pipelines/cache/`.
 
 | `format_requirement` | Behavior |
 | --- | --- |
 | `unstructured` | No extra answer-format constraint. |
-| `code` | Fusion-track answers are returned in Markdown code blocks. |
-| `tool_call` | Fusion-track answers are returned as JSON tool calls. |
-
-See [`examples/README.md`](examples/README.md) for the full configuration schema and routing-only dry run.
+| `code` | Fusion-track answers must be wrapped in a Markdown code block. |
+| `tool_call` | Fusion-track answers must be wrapped as JSON tool calls. |
 
 ## 📊 Results
 
-### PostTrainBench leaderboard
-
 <div align="center">
-  <img src="assets/posttrainbench_results.png" alt="PostTrainBench leaderboard" width="100%">
+  <img src="assets/posttrainbench_results.png" alt="PostTrainBench results" width="98%">
 </div>
 
-Across four base models and seven tasks, ANDES reaches **34.40%** average performance. Under the same trainer scaffold, adding ANDES raises the average from **21.56%** to **34.40%** (**+12.84 points**). The comparison below follows the current paper snapshot.
+### 🏆 Autonomous Post-Training on PostTrainBench
 
-| Method | Average |
+ANDES is evaluated across four base models and seven PostTrainBench benchmarks: AIME 2025, ArenaHardWriting, BFCL, GPQA-Main, GSM8K, HealthBench, and HumanEval.
+
+Beyond the final score, the paper shows that ANDES improves autonomous post-training because it upgrades the data loop itself:
+
+| Advantage | What ANDES changes |
+| --- | --- |
+| **Data quality** | The generator first creates task-grounded QA pairs, then a refiner critiques each response, filters high-effort low-quality samples, rewrites retained answers, and reports logical-diversity collapse signals. This makes the synthesized data more trainable than one-shot static generation. |
+| **Data generality** | The World Tree covers broad scenario space and evolves saturated subtrees, preserving general contextual diversity while routing more budget toward target-aligned capability regions. This helps explain the cross-task result of **58.9%** overall with only 10k ANDES samples. |
+| **Complete post-training pipeline** | ANDES is not an isolated data script: it returns data plus reports that trainer agents use to filter, rebalance, and configure the next call, closing the loop between diagnosis, synthesis, training, and evaluation. |
+
+| Method | Average Accuracy |
 | --- | ---: |
-| Official instruct models | 51.14 |
-| Base models, zero-shot | 7.53 |
-| GLM-4.7 with OpenCode | 7.48 |
-| GLM-4.7 with trainer scaffold | 21.56 |
-| Opus-4.8 High | 33.80 |
-| Opus-4.8 Max | 34.08 |
-| GLM-5.2 Max | 34.29 |
-| **GLM-4.7 + ANDES** | **34.40** |
+| Official instruct models | 51.14% |
+| Base models, zero-shot average | 7.53% |
+| GLM-4.7 with OpenCode baseline | 7.48% |
+| Opus-4.7 (xHigh) | 28.56% |
+| **GLM-4.7 with ANDES** | **33.39%** |
 
-Machine-readable aggregate results are available in [`results/posttrainbench_aggregate.csv`](results/posttrainbench_aggregate.csv).
+### 🌐 Cross-Task Generalization
 
-### Results across four base models
+In the extended multi-target synthesis setting, ANDES uses 10k synthesized samples for Qwen3-8B and reaches **58.9%** overall across AIME24, Gaokao, MBPP, MMLU, and CEVAL, outperforming the 10k and 1M static-data baselines reported in the paper.
 
-<div align="center">
-  <img src="assets/four_base_models.png" alt="ANDES results across four base models" width="58%">
-</div>
-
-The values below are means and standard deviations over four independent end-to-end runs for each base model.
-
-| Base model | AIME 2025 | ArenaHard | BFCL | GPQA Main | GSM8K | HealthBench | HumanEval | Weighted Avg. |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Qwen3-1.7B | 0.00±0.00 | 14.22±1.30 | 90.16±1.60 | 28.48±0.80 | 63.19±1.20 | 27.08±1.40 | 57.51±2.00 | **31.41±0.70** |
-| Qwen3-4B | 9.00±1.70 | 51.94±0.85 | 91.22±0.60 | 31.40±2.20 | 83.63±1.10 | 31.07±1.45 | 66.62±1.55 | **41.21±0.66** |
-| SmolLM3-3B | 6.60±1.20 | 15.21±1.35 | 79.91±1.55 | 27.00±1.10 | 68.67±1.45 | 38.50±1.70 | 42.42±1.85 | **32.91±0.78** |
-| Gemma3-4B | 0.00±0.00 | 26.55±1.40 | 86.09±1.25 | 26.83±0.95 | 77.92±1.50 | 34.46±1.60 | 33.59±1.35 | **32.05±0.72** |
-
-The complete statistics are also provided in [`results/repeated_runs.csv`](results/repeated_runs.csv).
-
-### Matched-scaffold and component ablations
-
-<div align="center">
-  <img src="assets/scaffold_ablation.png" alt="Matched-scaffold comparison" width="55%">
-</div>
-
-| Variant | Weighted Avg. |
-| --- | ---: |
-| GLM-4.7 (OpenCode) | 7.11 |
-| ANDES without World Tree | 25.97 |
-| ANDES without report-driven interaction | 26.58 |
-| ANDES with Gemini-3.1-Flash backend | 30.84 |
-| **Full ANDES with GPT-4o backend** | **31.41** |
-
-The Gemini condition replaces the router, generator, refiner, evolver, and diversity summarizer. The small difference from the default backend supports robustness to the internal model choice. Detailed ablation values are in [`results/ablation_qwen3_1.7b.csv`](results/ablation_qwen3_1.7b.csv).
-
-### Additional reliability evidence
-
-- **Contamination audit:** no exact matches were found between the synthesized training sets and their corresponding evaluation questions.
-- **Held-out transfer:** a Qwen3-1.7B checkpoint trained on data synthesized with GSM8K as the target reaches **89.00** on SVAMP and **88.52** on ASDiv-A.
-- **Multi-target synthesis:** 10k ANDES samples reach **58.9** overall on AIME24, Gaokao, MBPP, MMLU, and CEval, compared with 55.2 for DataFlow-10K and 49.6 for Infinstruct-1M.
-
-## 📁 Repository Layout
-
-```text
-andes/
-  operators/      # generation and refinement operators
-  pipelines/      # end-to-end agent tool and routing simulation
-  prompts/        # prompts and World Tree taxonomy
-  serving/        # OpenAI-compatible API backend
-  utils/          # registry and storage abstractions
-assets/           # framework and result figures
-examples/         # runnable configuration and usage notes
-results/          # machine-readable paper results
-skills/           # agent-facing ANDES synthesis skill
-```
+| Method | Data Volume | AIME24 | Gaokao | MBPP | MMLU | CEval | Overall |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Base Model (Qwen3-8B-Base) | - | 13.3 | 35.2 | 82.5 | 73.0 | 82.5 | 57.3 |
+| + Infinstruct | 10k | 0.0 (↓13.3) | 34.1 (↓1.1) | 76.2 (↓6.3) | 74.2 (↑1.2) | 81.3 (↓1.2) | 53.2 (↓4.1) |
+| + Infinstruct | 1M | 0.0 (↓13.3) | 28.6 (↓6.6) | 70.1 (↓12.4) | 71.3 (↓1.7) | 77.9 (↓4.6) | 49.6 (↓7.7) |
+| + Dataflow | 10k | 10.0 (↓3.3) | 31.9 (↓3.3) | 77.2 (↓5.3) | 74.6 (↑1.6) | 82.1 (↓0.4) | 55.2 (↓2.1) |
+| **+ ANDES (Ours)** | **10k** | **10.0 (↓3.3)** | **49.5 (↑14.3)** | **77.7 (↓4.8)** | **74.8 (↑1.8)** | **82.4 (↓0.1)** | **58.9 (↑1.6)** |
 
 ## 📚 Citation
 
-```bibtex
-@misc{zhao2026andes,
-  title        = {ANDES: Agent-Native Data Evolving Synthesis via Feedback-Controlled Experience Acquisition},
-  author       = {Zhengyang Zhao and Shengjie Ye and Lu Ma and Hao Liang and Hengyi Feng and Wentao Zhang},
-  year         = {2026},
-  howpublished = {\url{https://github.com/zzy1127/ANDES}}
-}
-```
+Coming soon. Citation metadata will be added after the public paper record is finalized.
 
 ## 🙏 Acknowledgment
 
-We build the codebase on the DataFlow framework and evaluate autonomous post-training with PostTrainBench. We thank the open-source post-training, data-synthesis, and agent-tooling communities.
+We build the codebase on the DataFlow framework and evaluate the autonomous post-training setting with PostTrainBench. We thank the open-source post-training, data-synthesis, and agent-tooling communities for the foundations that made this work possible.
 
 ## 📮 Contact
+
+For questions about the paper or code, please contact:
 
 - `zhengyangzhao25@stu.pku.edu.cn`
 - `yeshengjie@stu.scu.edu.cn`
